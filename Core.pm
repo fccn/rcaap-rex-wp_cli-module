@@ -1,12 +1,12 @@
 #
 # Paulo Graça <paulo1978@gmail.com>
 #
-package Rex::CMS::WP_CLI::Core;
+package Rex::Module::CMS::WP_CLI::Core;
 
 use strict;
 
 use Rex::Commands;
-use Rex::CMS::WP_CLI;
+use Rex::Module::CMS::WP_CLI;
 use Rex::Logger;
 use Data::Dumper;
 
@@ -43,7 +43,7 @@ task "update_db" => sub {
 
 desc 'return 1 if not installed';
 sub is_installed {	
-	Rex::CMS::WP_CLI::execute ('core is-installed');
+	Rex::Module::CMS::WP_CLI::execute ('core is-installed');
    return ($? == 0);
 };
 
@@ -51,7 +51,7 @@ sub _execute {
    my ($task_name, $params) = @_;
    my @action = split(/\:/, $task_name);   
    
-   Rex::CMS::WP_CLI::executeAction('', {
+   Rex::Module::CMS::WP_CLI::executeAction('', {
 		  command => $WP_CLI_COMMAND,
 		  action => $action[$#action],
 		  parameters => $params,

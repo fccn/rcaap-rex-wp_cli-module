@@ -1,4 +1,4 @@
-package Rex::CMS::WP_CLI;
+package Rex::Module::CMS::WP_CLI;
 
 use strict;
 use warnings;
@@ -109,14 +109,14 @@ task "execute" => sub {
 
 =pod
 =head1 NAME
-Rex::CMS::WP_CLI - Wordpress CLI module for Rex, it permits to manage Wordpress install through the Command-Line Interface
+Rex::Module::CMS::WP_CLI - Wordpress CLI module for Rex, it permits to manage Wordpress install through the Command-Line Interface
 =head1 USAGE
- rex -H $host Rex:CMS:WP_CLI:setup
+ rex -H $host Module:CMS:WP_CLI:setup
 Or, to use it as a library
- use Rex::CMS::WP_CLI;
+ use Rex::Module::CMS::WP_CLI;
  
  task "prepare", sub {
-    Rex::CMS::WP_CLI::setup();
+    Rex::Module::CMS::WP_CLI::setup();
  };
 
 =head1 TASKS
@@ -130,7 +130,7 @@ Or, to use it as a library
   This task will execute wp cli commands
   
      task "mytask", sub {
-      Rex::CMS::WP_CLI::execute('/path_to_wordpress_website', {
+      Rex::Module::CMS::WP_CLI::execute('/path_to_wordpress_website', {
 		  command => 'theme',
 		  action => 'install',
 		  parameters => 'twentysixteen --activate',

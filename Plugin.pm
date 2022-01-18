@@ -1,14 +1,14 @@
 #
-# Paulo Graça <paulo1978@gmail.com>
+# Paulo Graça <info@rcaap.pt>
 #
-package Rex::CMS::WP_CLI::Plugin;
+package Rex::Module::CMS::WP_CLI::Plugin;
 
 use strict;
 use warnings;
 
 use Data::Dumper;
 use Rex::Commands;
-use Rex::CMS::WP_CLI;
+use Rex::Module::CMS::WP_CLI;
 
 our $WP_CLI_COMMAND = 'plugin';
 
@@ -40,7 +40,7 @@ sub _execute {
    my ($task_name, $params) = @_;
    my @action = split(/\:/, $task_name);   
    
-   Rex::CMS::WP_CLI::executeAction('', {
+   Rex::Module::CMS::WP_CLI::executeAction('', {
 		  command => $WP_CLI_COMMAND,
 		  action => $action[$#action],
 		  parameters => $params,
