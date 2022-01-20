@@ -5,5 +5,5 @@ License: Apache 2.0
 Require:
   # dependes on PHP from Recipies
   - Rex/Lang/PHP:
-        git: https://github.com/RexOps/rex-recipes.git
+        git: https://github.com/fccn/rex-recipes.git
         branch: "Rex/Lang/PHP"
