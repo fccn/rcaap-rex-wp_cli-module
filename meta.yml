@@ -4,6 +4,6 @@ Author: Paulo Graça <info@rcaap.pt>
 License: Apache 2.0
 Require:
   # dependes on PHP from Recipies
-  - Rex::Lang::PHP:
+  - Rex/Lang/PHP:
         git: https://github.com/RexOps/rex-recipes.git
-        branch: "1.4"
+        branch: "Rex/Lang/PHP"
