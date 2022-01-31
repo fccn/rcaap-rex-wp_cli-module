@@ -54,3 +54,14 @@ Or, you can use it as a library in your project
             'DB_NAME' => 'db_name'}, params => '--allow-root'});
  };
  ```
+ 
+ ## Using with Docker Compose
+ In order to use this module with a WP_CLI container, you need to configure your CMDB file and add an entry like:
+ ```
+ Rex::Module::CMS::WP_CLI::command: 'docker-compose -f /[DIR]/[docker-compose.yml] --project-directory /[DIR]  run --rm [wpcli]'
+ ```
+ 
+ Having:
+ [DIR] as the directory where you have your working directory and or docker-compose.yml
+ [wpcli] as your container name
+ 
