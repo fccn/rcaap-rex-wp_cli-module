@@ -42,6 +42,25 @@ task "install" => sub {
 	}
 };
 
+task "multisite-install" => sub {
+	if (is_installed()) {
+		Rex::Logger::info( "WP already installed, nothing to do", "warn" );
+	} else {
+		my $param = shift; 
+
+		my $admin_user = $param->{'conf'}->{'admin_user'};
+		my $admin_email = $param->{'conf'}->{'admin_email'};
+		my $url = $param->{'conf'}->{'url'};
+		my $title = $param->{'conf'}->{'title'};
+		my $admin_password = $param->{'conf'}->{'admin_password'};
+
+		my $command = "--url=$url --title=$title --admin_user=$admin_user --admin_password=$admin_password --admin_email=$admin_email " . $param->{'params'};
+		_execute(
+			task => task->name,
+			subparams => $command);
+	}
+};
+
 desc 'return 1 if not installed';
 sub is_installed {
 	Rex::Module::CMS::WP_CLI::execute ('core is-installed');
