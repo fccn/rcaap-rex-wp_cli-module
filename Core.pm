@@ -12,9 +12,16 @@ use Data::Dumper;
 
 our $WP_CLI_COMMAND = 'core';
 
-task "download" => sub {
-   _execute(task->name, @_);
-};
+my @subcommands = qw( download update update_db );
+foreach my $subcommand (@subcommands) {
+	desc "$subcommand $WP_CLI_COMMAND";
+	task "$subcommand",
+		sub {
+			_execute(
+				task => task->name,
+				subparams => @_);
+		};
+}
 
 task "install" => sub {
 	if (is_installed()) {
@@ -29,32 +36,35 @@ task "install" => sub {
 		my $admin_password = $param->{'conf'}->{'admin_password'};
 
 		my $command = "--url=$url --title=$title --admin_user=$admin_user --admin_password=$admin_password --admin_email=$admin_email " . $param->{'params'};
-		_execute(task->name, $command);
+		_execute(
+			task => task->name,
+			subparams => $command);
 	}
 };
 
-task "update" => sub {
-   _execute(task->name, @_);
-};
-
-task "update_db" => sub {
-   _execute(task->name, @_);
-};
-
 desc 'return 1 if not installed';
-sub is_installed {	
+sub is_installed {
 	Rex::Module::CMS::WP_CLI::execute ('core is-installed');
-   return ($? == 0);
+	return ($? == 0);
 };
+
 
 sub _execute {
-   my ($task_name, $params) = @_;
-   my @action = split(/\:/, $task_name);   
-   
-   Rex::Module::CMS::WP_CLI::executeAction('', {
-		  command => $WP_CLI_COMMAND,
-		  action => $action[$#action],
-		  parameters => $params,
-		}
-   );
+	my @params = @_;
+
+	my $param;
+	if ( ref $params[0] eq "HASH" ) {
+		$param = $params[0];
+	} else {
+		$param = {@params};
+	}
+
+	my @action = split(/\:/, $param->{task});
+
+	Rex::Module::CMS::WP_CLI::execute (
+		Rex::Module::CMS::WP_CLI::buildCommand(
+			command => $WP_CLI_COMMAND,
+			subcommand => $action[$#action],
+			parameters => $param,
+		), $param );
 };

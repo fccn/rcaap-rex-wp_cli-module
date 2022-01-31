@@ -8,30 +8,39 @@ use Rex::Module::CMS::WP_CLI;
 
 our $WP_CLI_COMMAND = 'theme';
 
-task "activate" => sub {
-  _execute(task->name, @_);
-};
-
-task "delete" => sub {
-   _execute(task->name, @_);
-};
-
-task "install" => sub {
-   _execute(task->name, @_);
-};
-
-task "update" => sub {
-   _execute(task->name, @_);
-};
-
 sub _execute {
-   my ($task_name, $params) = @_;
-   my @action = split(/\:/, $task_name);   
-   
-   Rex::Module::CMS::WP_CLI::executeAction('', {
-		  command => $WP_CLI_COMMAND,
-		  action => $action[$#action],
-		  parameters => $params,
-		}
-   );
+	my @params = @_;
+
+	my $param;
+	if ( ref $params[0] eq "HASH" ) {
+		$param = $params[0];
+	} else {
+		$param = {@params};
+	}
+
+	my @action = split(/\:/, $param->{task});
+
+	Rex::Module::CMS::WP_CLI::execute (
+		Rex::Module::CMS::WP_CLI::buildCommand(
+			command => $WP_CLI_COMMAND,
+			subcommand => $action[$#action],
+			parameters => $param,
+		), $param );
+};
+
+
+my @subcommands = qw( install delete activate update );
+foreach my $subcommand (@subcommands) {
+	desc "$subcommand $WP_CLI_COMMAND";
+	task "$subcommand",
+		sub {
+			_execute(
+				task => task->name,
+				subparams => @_);
+		};
+}
+
+desc "alias for install";
+task "setup" => sub {
+	_execute('install', @_);
 };
