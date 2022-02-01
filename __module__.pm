@@ -65,11 +65,30 @@ sub buildCommand {
 				.' '.$param->{parameters}->{params};
 };
 
+=head2 Usage
+	Rex::Module::CMS::WP_CLI ("help");
+	# list configurations
+	Rex::Module::CMS::WP_CLI ("config list");
+=cut
 
-desc "Execute Full command WordPress CLI tool";
-task "execute" => sub {
+# Execute Full command WordPress CLI tool
+sub execute {
 	my $params = shift;
-	my $command = (keys %{$params})[0];
+	my $command;
+	my $env;
+	
+	if ( ref $params eq 'HASH' ) {
+		$command = (keys %{$params})[0];
+		if (ref $params->{$command}->{'env'} eq 'HASH' ) {
+			$env = $params->{$command}->{'env'};
+		} else {
+			$env = {$params->{$command}->{'env'}};
+		}
+
+	} else {
+		$command = $params;
+	}
+
 	my $base_dir;
 	my $hasParamPathPos = index($command, '--path=');
 
@@ -80,7 +99,11 @@ task "execute" => sub {
 
 	run 'wp',
 		command => param_lookup ("command", $wp_command).' '. "$command $pathParam",
-		env => $params->{$command}->{'env'};
+		continuous_read => sub {
+			#output to log
+			Rex::Logger::info(@_);
+		},
+		env => $env;
 
 	die("Error running wp command. Please check the base_dir param or if WP is installed.") unless ($? == 0);
 
