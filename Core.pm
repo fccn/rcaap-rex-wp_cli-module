@@ -42,7 +42,7 @@ task "install" => sub {
 	}
 };
 
-task "multisite-install" => sub {
+task "multisite_install" => sub {
 	if (is_installed()) {
 		Rex::Logger::info( "WP already installed, nothing to do", "warn" );
 	} else {
