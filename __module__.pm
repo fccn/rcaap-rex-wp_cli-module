@@ -1,3 +1,6 @@
+#
+# Paulo Graça <info@rcaap.pt>
+#
 package Rex::Module::CMS::WP_CLI;
 
 use strict;

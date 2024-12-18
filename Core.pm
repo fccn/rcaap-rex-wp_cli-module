@@ -1,5 +1,5 @@
 #
-# Paulo Graça <paulo1978@gmail.com>
+# Paulo Graça <info@rcaap.pt>
 #
 package Rex::Module::CMS::WP_CLI::Core;
 
